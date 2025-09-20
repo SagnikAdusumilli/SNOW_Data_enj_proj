@@ -1,0 +1,4 @@
+1) Logic Apps, and Azure Synapse Analytics, What id DAX
+2) AWS basics
+3) learn Kafka in Data Engineering
+3) Finish the databricks cert instructions
