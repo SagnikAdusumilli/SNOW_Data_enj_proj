@@ -1,1 +1,0 @@
-# SNOW Data Engineering Project
