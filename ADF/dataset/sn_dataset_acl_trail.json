@@ -7,7 +7,232 @@
 		},
 		"annotations": [],
 		"type": "ServiceNowV2Object",
-		"schema": [],
+		"schema": [
+			{
+				"name": "ta_sys_updated_on",
+				"type": "glide_date_time"
+			},
+			{
+				"name": "ta_transaction_id",
+				"type": "string"
+			},
+			{
+				"name": "ta_changed_for_user_name",
+				"type": "string"
+			},
+			{
+				"name": "ta_sys_updated_by",
+				"type": "string"
+			},
+			{
+				"name": "ta_type",
+				"type": "string"
+			},
+			{
+				"name": "ta_ip_address",
+				"type": "string"
+			},
+			{
+				"name": "ta_record_id",
+				"type": "string"
+			},
+			{
+				"name": "ta_action",
+				"type": "string"
+			},
+			{
+				"name": "ta_changed_for_user",
+				"type": "reference"
+			},
+			{
+				"name": "ta_sys_mod_count",
+				"type": "integer"
+			},
+			{
+				"name": "ta_sys_id",
+				"type": "GUID"
+			},
+			{
+				"name": "ta_source_table",
+				"type": "table_name"
+			},
+			{
+				"name": "ta_user_agent",
+				"type": "string"
+			},
+			{
+				"name": "ta_internal_checkpoint",
+				"type": "string"
+			},
+			{
+				"name": "ta_category",
+				"type": "string"
+			},
+			{
+				"name": "ta_sys_created_on",
+				"type": "glide_date_time"
+			},
+			{
+				"name": "ta_transaction_url",
+				"type": "string"
+			},
+			{
+				"name": "ta_event_name",
+				"type": "string"
+			},
+			{
+				"name": "ta_sys_created_by",
+				"type": "string"
+			},
+			{
+				"name": "acl_sys_id",
+				"type": "GUID"
+			},
+			{
+				"name": "acl_sys_package",
+				"type": "reference"
+			},
+			{
+				"name": "acl_sys_created_on",
+				"type": "glide_date_time"
+			},
+			{
+				"name": "acl_sys_policy",
+				"type": "string"
+			},
+			{
+				"name": "acl_sys_update_name",
+				"type": "string"
+			},
+			{
+				"name": "acl_sys_created_by",
+				"type": "string"
+			},
+			{
+				"name": "acl_name",
+				"type": "composite_name"
+			},
+			{
+				"name": "acl_condition",
+				"type": "conditions"
+			},
+			{
+				"name": "acl_applies_to",
+				"type": "conditions"
+			},
+			{
+				"name": "acl_operation",
+				"type": "reference"
+			},
+			{
+				"name": "acl_description",
+				"type": "string"
+			},
+			{
+				"name": "acl_script",
+				"type": "script_plain"
+			},
+			{
+				"name": "acl_active",
+				"type": "boolean"
+			},
+			{
+				"name": "acl_advanced",
+				"type": "boolean"
+			},
+			{
+				"name": "acl_admin_overrides",
+				"type": "boolean"
+			},
+			{
+				"name": "acl_controlled_by_refs",
+				"type": "glide_list"
+			},
+			{
+				"name": "acl_local_or_existing",
+				"type": "radio"
+			},
+			{
+				"name": "acl_security_attribute",
+				"type": "reference"
+			},
+			{
+				"name": "acl_decision_type",
+				"type": "choice"
+			},
+			{
+				"name": "acl_sys_name",
+				"type": "string"
+			},
+			{
+				"name": "acl_sys_scope",
+				"type": "reference"
+			},
+			{
+				"name": "acl_sys_updated_on",
+				"type": "glide_date_time"
+			},
+			{
+				"name": "acl_type",
+				"type": "reference"
+			},
+			{
+				"name": "acl_sys_updated_by",
+				"type": "string"
+			},
+			{
+				"name": "acl_sys_class_name",
+				"type": "sys_class_name"
+			},
+			{
+				"name": "acl_sys_mod_count",
+				"type": "integer"
+			},
+			{
+				"name": "afa_sys_created_by",
+				"type": "string"
+			},
+			{
+				"name": "afa_old_value",
+				"type": "string"
+			},
+			{
+				"name": "afa_sys_updated_on",
+				"type": "glide_date_time"
+			},
+			{
+				"name": "afa_field_name",
+				"type": "string"
+			},
+			{
+				"name": "afa_sys_mod_count",
+				"type": "integer"
+			},
+			{
+				"name": "afa_sys_updated_by",
+				"type": "string"
+			},
+			{
+				"name": "afa_table_level_audit_id",
+				"type": "reference"
+			},
+			{
+				"name": "afa_field_reference_table",
+				"type": "table_name"
+			},
+			{
+				"name": "afa_sys_created_on",
+				"type": "glide_date_time"
+			},
+			{
+				"name": "afa_sys_id",
+				"type": "GUID"
+			},
+			{
+				"name": "afa_new_value",
+				"type": "string"
+			}
+		],
 		"typeProperties": {
 			"tableName": "acl_trail",
 			"valueType": "actual"
