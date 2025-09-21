@@ -1,0 +1,22 @@
+{
+	"name": "ls_conn_admin",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "admin role dev instance",
+		"annotations": [],
+		"type": "ServiceNowV2",
+		"typeProperties": {
+			"endpoint": "https://dev226103.service-now.com/",
+			"authenticationType": "Basic",
+			"username": "admin",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "snow_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "sagnikpwd"
+			}
+		}
+	}
+}

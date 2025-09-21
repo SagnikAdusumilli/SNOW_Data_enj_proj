@@ -1,0 +1,9 @@
+{
+	"name": "ingestsnow",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7499f348-3ff1-4265-a220-85790faf9c1a",
+		"tenantId": "ef33cc05-d885-4ef7-9a56-b4b441744173"
+	}
+}

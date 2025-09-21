@@ -1,0 +1,17 @@
+{
+	"name": "sn_dataset_acl_trail",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_conn_admin",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "ServiceNowV2Object",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "acl_trail",
+			"valueType": "actual"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
