@@ -1,0 +1,91 @@
+{
+	"name": "PL_snow_to_raw_acl_trail",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set FileName",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "GeneratedFileName",
+					"value": {
+						"value": "@concat('acl_trail_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "acl_trail copy",
+				"description": "Copy data from acl_trail table",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set FileName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ServiceNowV2Source",
+						"pageSize": 300
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings",
+							"copyBehavior": "FlattenHierarchy"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "sn_dataset_acl_trail",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "sink_ds",
+						"type": "DatasetReference",
+						"parameters": {
+							"FileName": "@variables('GeneratedFileName')"
+						}
+					}
+				]
+			}
+		],
+		"variables": {
+			"GeneratedFileName": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
