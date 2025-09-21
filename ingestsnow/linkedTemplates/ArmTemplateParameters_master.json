@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "ingestsnow"
+		},
+		"ls_adls_conn_accountKey": {
+			"value": ""
+		},
+		"ls_snow_conn_password": {
+			"value": ""
+		},
+		"ls_adls_conn_properties_typeProperties_url": {
+			"value": "https://snowadlsacc.dfs.core.windows.net/"
+		},
+		"ls_conn_admin_properties_typeProperties_endpoint": {
+			"value": "https://dev226103.service-now.com/"
+		},
+		"ls_conn_admin_properties_typeProperties_username": {
+			"value": "admin"
+		},
+		"ls_snow_conn_properties_typeProperties_endpoint": {
+			"value": "https://tdbfgdev.service-now.com/"
+		},
+		"ls_snow_conn_properties_typeProperties_username": {
+			"value": "ws.auto.td.eGRC"
+		},
+		"snow_akv_properties_typeProperties_baseUrl": {
+			"value": "https://sagniksnowakv.vault.azure.net/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

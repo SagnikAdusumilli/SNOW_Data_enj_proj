@@ -1,0 +1,145 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "ingestsnow"
+		},
+		"ls_adls_conn_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'ls_adls_conn'"
+		},
+		"ls_snow_conn_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'ls_snow_conn'"
+		},
+		"ls_adls_conn_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://snowadlsacc.dfs.core.windows.net/"
+		},
+		"ls_conn_admin_properties_typeProperties_endpoint": {
+			"type": "string",
+			"defaultValue": "https://dev226103.service-now.com/"
+		},
+		"ls_conn_admin_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "admin"
+		},
+		"ls_snow_conn_properties_typeProperties_endpoint": {
+			"type": "string",
+			"defaultValue": "https://tdbfgdev.service-now.com/"
+		},
+		"ls_snow_conn_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "ws.auto.td.eGRC"
+		},
+		"snow_akv_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://sagniksnowakv.vault.azure.net/"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/sn_dataset_acl_trail')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_conn_admin",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "ServiceNowV2Object",
+				"schema": [],
+				"typeProperties": {
+					"tableName": "acl_trail",
+					"valueType": "actual"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_conn_admin')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_adls_conn')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('ls_adls_conn_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('ls_adls_conn_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_conn_admin')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "admin role dev instance",
+				"annotations": [],
+				"type": "ServiceNowV2",
+				"typeProperties": {
+					"endpoint": "[parameters('ls_conn_admin_properties_typeProperties_endpoint')]",
+					"authenticationType": "Basic",
+					"username": "[parameters('ls_conn_admin_properties_typeProperties_username')]",
+					"password": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "snow_akv",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "sagnikpwd"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/snow_akv')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ls_snow_conn')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Connection to service Now",
+				"annotations": [],
+				"type": "ServiceNowV2",
+				"typeProperties": {
+					"endpoint": "[parameters('ls_snow_conn_properties_typeProperties_endpoint')]",
+					"authenticationType": "Basic",
+					"username": "[parameters('ls_snow_conn_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('ls_snow_conn_password')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/snow_akv')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('snow_akv_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
