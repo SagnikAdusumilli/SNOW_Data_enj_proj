@@ -11,7 +11,8 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"folderPath": "incoming",
-				"fileSystem": "raw"
+				"fileSystem": "raw",
+				"fileName": "@dataset().Filename"
 			},
 			"compressionCodec": "snappy"
 		},
