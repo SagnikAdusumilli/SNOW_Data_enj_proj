@@ -14,7 +14,7 @@
 				"typeProperties": {
 					"variableName": "GeneratedFileName",
 					"value": {
-						"value": "@concat('acl_trail_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')",
+						"value": "@concat('acl_trail_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.csv')",
 						"type": "Expression"
 					}
 				}
@@ -45,13 +45,15 @@
 						"pageSize": 300
 					},
 					"sink": {
-						"type": "ParquetSink",
+						"type": "DelimitedTextSink",
 						"storeSettings": {
 							"type": "AzureBlobFSWriteSettings",
 							"copyBehavior": "FlattenHierarchy"
 						},
 						"formatSettings": {
-							"type": "ParquetWriteSettings"
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": false,
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -72,7 +74,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "sink_ds",
+						"referenceName": "sink_ds_csv",
 						"type": "DatasetReference",
 						"parameters": {
 							"FileName": "@variables('GeneratedFileName')"
