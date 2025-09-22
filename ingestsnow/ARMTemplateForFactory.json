@@ -45,6 +45,107 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/PL_snow_to_raw_acl_trail')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Set FileName",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "GeneratedFileName",
+							"value": {
+								"value": "@concat('acl_trail_', formatDateTime(utcNow(),'yyyyMMddHHmmss'), '.parquet')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "acl_trail copy",
+						"description": "Copy data from acl_trail table",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Set FileName",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ServiceNowV2Source",
+								"pageSize": 300
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings",
+									"copyBehavior": "FlattenHierarchy"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "sn_dataset_acl_trail",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "sink_ds",
+								"type": "DatasetReference",
+								"parameters": {
+									"FileName": "@variables('GeneratedFileName')"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"GeneratedFileName": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/sn_dataset_acl_trail')]",
+				"[concat(variables('factoryId'), '/datasets/sink_ds')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/sink_ds')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -53,11 +154,20 @@
 					"referenceName": "ls_adls_conn",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"FileName": {
+						"type": "String"
+					}
+				},
 				"annotations": [],
 				"type": "Parquet",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
 						"folderPath": "incoming",
 						"fileSystem": "raw"
 					},
@@ -80,7 +190,232 @@
 				},
 				"annotations": [],
 				"type": "ServiceNowV2Object",
-				"schema": [],
+				"schema": [
+					{
+						"name": "ta_sys_updated_on",
+						"type": "glide_date_time"
+					},
+					{
+						"name": "ta_transaction_id",
+						"type": "string"
+					},
+					{
+						"name": "ta_changed_for_user_name",
+						"type": "string"
+					},
+					{
+						"name": "ta_sys_updated_by",
+						"type": "string"
+					},
+					{
+						"name": "ta_type",
+						"type": "string"
+					},
+					{
+						"name": "ta_ip_address",
+						"type": "string"
+					},
+					{
+						"name": "ta_record_id",
+						"type": "string"
+					},
+					{
+						"name": "ta_action",
+						"type": "string"
+					},
+					{
+						"name": "ta_changed_for_user",
+						"type": "reference"
+					},
+					{
+						"name": "ta_sys_mod_count",
+						"type": "integer"
+					},
+					{
+						"name": "ta_sys_id",
+						"type": "GUID"
+					},
+					{
+						"name": "ta_source_table",
+						"type": "table_name"
+					},
+					{
+						"name": "ta_user_agent",
+						"type": "string"
+					},
+					{
+						"name": "ta_internal_checkpoint",
+						"type": "string"
+					},
+					{
+						"name": "ta_category",
+						"type": "string"
+					},
+					{
+						"name": "ta_sys_created_on",
+						"type": "glide_date_time"
+					},
+					{
+						"name": "ta_transaction_url",
+						"type": "string"
+					},
+					{
+						"name": "ta_event_name",
+						"type": "string"
+					},
+					{
+						"name": "ta_sys_created_by",
+						"type": "string"
+					},
+					{
+						"name": "acl_sys_id",
+						"type": "GUID"
+					},
+					{
+						"name": "acl_sys_package",
+						"type": "reference"
+					},
+					{
+						"name": "acl_sys_created_on",
+						"type": "glide_date_time"
+					},
+					{
+						"name": "acl_sys_policy",
+						"type": "string"
+					},
+					{
+						"name": "acl_sys_update_name",
+						"type": "string"
+					},
+					{
+						"name": "acl_sys_created_by",
+						"type": "string"
+					},
+					{
+						"name": "acl_name",
+						"type": "composite_name"
+					},
+					{
+						"name": "acl_condition",
+						"type": "conditions"
+					},
+					{
+						"name": "acl_applies_to",
+						"type": "conditions"
+					},
+					{
+						"name": "acl_operation",
+						"type": "reference"
+					},
+					{
+						"name": "acl_description",
+						"type": "string"
+					},
+					{
+						"name": "acl_script",
+						"type": "script_plain"
+					},
+					{
+						"name": "acl_active",
+						"type": "boolean"
+					},
+					{
+						"name": "acl_advanced",
+						"type": "boolean"
+					},
+					{
+						"name": "acl_admin_overrides",
+						"type": "boolean"
+					},
+					{
+						"name": "acl_controlled_by_refs",
+						"type": "glide_list"
+					},
+					{
+						"name": "acl_local_or_existing",
+						"type": "radio"
+					},
+					{
+						"name": "acl_security_attribute",
+						"type": "reference"
+					},
+					{
+						"name": "acl_decision_type",
+						"type": "choice"
+					},
+					{
+						"name": "acl_sys_name",
+						"type": "string"
+					},
+					{
+						"name": "acl_sys_scope",
+						"type": "reference"
+					},
+					{
+						"name": "acl_sys_updated_on",
+						"type": "glide_date_time"
+					},
+					{
+						"name": "acl_type",
+						"type": "reference"
+					},
+					{
+						"name": "acl_sys_updated_by",
+						"type": "string"
+					},
+					{
+						"name": "acl_sys_class_name",
+						"type": "sys_class_name"
+					},
+					{
+						"name": "acl_sys_mod_count",
+						"type": "integer"
+					},
+					{
+						"name": "afa_sys_created_by",
+						"type": "string"
+					},
+					{
+						"name": "afa_old_value",
+						"type": "string"
+					},
+					{
+						"name": "afa_sys_updated_on",
+						"type": "glide_date_time"
+					},
+					{
+						"name": "afa_field_name",
+						"type": "string"
+					},
+					{
+						"name": "afa_sys_mod_count",
+						"type": "integer"
+					},
+					{
+						"name": "afa_sys_updated_by",
+						"type": "string"
+					},
+					{
+						"name": "afa_table_level_audit_id",
+						"type": "reference"
+					},
+					{
+						"name": "afa_field_reference_table",
+						"type": "table_name"
+					},
+					{
+						"name": "afa_sys_created_on",
+						"type": "glide_date_time"
+					},
+					{
+						"name": "afa_sys_id",
+						"type": "GUID"
+					},
+					{
+						"name": "afa_new_value",
+						"type": "string"
+					}
+				],
 				"typeProperties": {
 					"tableName": "acl_trail",
 					"valueType": "actual"
