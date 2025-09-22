@@ -52,7 +52,7 @@
 						},
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": false,
+							"quoteAllText": true,
 							"fileExtension": ".txt"
 						}
 					},
